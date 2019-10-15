@@ -121,14 +121,14 @@ export const SteppingStoneApp = (sources) => {
   
   
   const num_cycles_c = Slider({DOM: sources.DOM},
-                              {className: '.' + tag + '-num_cycles', label: 'Cycles',
+                              {className: '.' + tag + '-num_cycles', label: 'Generations',
                                step: 10, min: 10, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
   const num_markers_c = Slider({DOM: sources.DOM},
                                {className: '.' + tag + '-num_markers', label: 'Number of markers',
-                                step: 1, min: 1, value: 4, max: 20})
+                                step: 1, min: 1, value: 4, max: 100})
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 

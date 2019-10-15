@@ -8,7 +8,7 @@ const plot_spec = conf => {
     const cf = Object.assign({}, conf)
     cf.desc = cf.desc || ''
     cf.title = cf.title || ''
-    cf.x_label = cf.x_label || 'Cycles'
+    cf.x_label = cf.x_label || 'Generations'
     cf.y_label = cf.y_label || ''
     return `
     {

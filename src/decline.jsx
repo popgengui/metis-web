@@ -95,32 +95,32 @@ export const DeclineApp = (sources) => {
   
   const start_pop_size_c = Slider({DOM: sources.DOM},
                                   {className: '.' + tag + '-start_pop_size', label: 'Starting population size',
-                                   step: 10, min: 10, value: 200, max: 300})
+                                   step: 10, min: 10, value: 200, max: 1000})
   let start_pop_size
   start_pop_size_c.value.subscribe(v => start_pop_size = v)
 
   const end_pop_size_c = Slider({DOM: sources.DOM},
                                 {className: '.' + tag + '-end_pop_size', label: 'Size after decline',
-                                 step: 10, min: 10, value: 30, max: 300})
+                                 step: 10, min: 10, value: 30, max: 1000})
   let end_pop_size
   end_pop_size_c.value.subscribe(v => end_pop_size = v)
 
   const decline_cycle_c = Slider({DOM: sources.DOM},
-                                 {className: '.' + tag + '-decline_cycle', label: 'Decline cycle',
+                                 {className: '.' + tag + '-decline_cycle', label: 'Decline generation',
                                   step: 10, min: 10, value: 100, max: 200})
   let decline_cycle
   decline_cycle_c.value.subscribe(v => decline_cycle = v)
 
   
   const num_cycles_c = Slider({DOM: sources.DOM},
-                              {className: '.' + tag + '-num_cycles', label: 'Cycles',
+                              {className: '.' + tag + '-num_cycles', label: 'Generations',
                                step: 10, min: 10, value: 200, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
   const num_markers_c = Slider({DOM: sources.DOM},
                                {className: '.' + tag + '-num_markers', label: 'Number of markers',
-                                step: 1, min: 1, value: 4, max: 20})
+                                step: 1, min: 1, value: 4, max: 100})
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 

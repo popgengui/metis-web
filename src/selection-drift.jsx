@@ -16,7 +16,10 @@ import {
   ops_stats_TimeFix,
   ops_stats_NumAl,
   ops_wrap_list,
-  p_generate_n_inds
+  p_generate_n_inds,
+  i_assign_random_sex,
+  integrated_generate_individual_with_genome,
+  integrated_create_freq_genome
 } from '@tiagoantao/metis-sim'
 
 
@@ -163,7 +166,7 @@ export const SelectionDriftApp = (sources) => {
 
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
-    {className: '.' + tag + '-num_cycles', label: 'cycles:',
+    {className: '.' + tag + '-num_cycles', label: 'generations:',
      step: 10, min: 10, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)

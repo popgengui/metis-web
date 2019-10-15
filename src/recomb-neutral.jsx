@@ -114,7 +114,7 @@ export const RecombNeutralApp = (sources) => {
   
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
-    {className: '.' + tag + '-num_cycles', label: 'Cycles',
+    {className: '.' + tag + '-num_cycles', label: 'Generations',
      step: 10, min: 10, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
