@@ -18,6 +18,7 @@ import {
   ops_stats_FreqAl,
   ops_wrap_list,
   p_generate_n_inds,
+  ops_stats_utils_SaveGenepop,
   sp_Species} from '@tiagoantao/metis-sim'
 
 
@@ -94,6 +95,12 @@ export const StochasticityApp = (sources) => {
                            .events('click')
                            .map(ev => parseInt(ev.target.value))
 
+   const save$ = sources
+    .DOM.select('#' + tag + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+
   simulate$.subscribe((x) => console.log(2123, x))
 
   const metis$ = simulate$.map(_ => {
@@ -103,6 +110,22 @@ export const StochasticityApp = (sources) => {
     }
     return init
   })
+
+  const save_gp$ = my_metis$.sample(save$)
+
+  save_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', 'metis.txt')
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
 
   const vdom$ = Rx.Observable
                   .combineLatest(
@@ -120,6 +143,10 @@ export const StochasticityApp = (sources) => {
                         <button id={tag} value="1">Simulate</button>
                       </div>
 		      {freqal}
+                       <br/>
+                       <div style="text-align: center">
+                         <button id={tag + '_save'} value="1">Save Genepop</button>
+			</div>
                     </div>
                   )
 

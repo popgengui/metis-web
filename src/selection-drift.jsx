@@ -16,6 +16,7 @@ import {
   ops_stats_TimeFix,
   ops_stats_NumAl,
   ops_wrap_list,
+  ops_stats_utils_SaveGenepop,
   p_generate_n_inds,
   i_assign_random_sex,
   integrated_generate_individual_with_genome,
@@ -208,6 +209,48 @@ export const SelectionDriftApp = (sources) => {
                            .events('click')
                            .map(ev => parseInt(ev.target.value))
 
+   const save_dmetis1$ = sources
+    .DOM.select('#' + 'dmetis1' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_dmetis2$ = sources
+    .DOM.select('#' + 'dmetis2' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_rmetis1$ = sources
+    .DOM.select('#' + 'rmetis1' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_rmetis2$ = sources
+    .DOM.select('#' + 'rmetis2' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_hmetis1$ = sources
+    .DOM.select('#' + 'hmetis1' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_hmetis2$ = sources
+    .DOM.select('#' + 'hmetis2' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_hnmetis1$ = sources
+    .DOM.select('#' + 'hnmetis1' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+    const save_hnmetis2$ = sources
+    .DOM.select('#' + 'hnmetis2' + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
+
+
+
   const dmetis1$ = simulate$.map(_ => {
     const sel = {0: 1 - s, 1: 1, 2: 1}
     const init = {
@@ -273,6 +316,121 @@ export const SelectionDriftApp = (sources) => {
     return init
   })
   
+   const save_dmetis1_gp$ = my_dmetis1$.sample(save_dmetis1$)
+   const save_dmetis2_gp$ = my_dmetis2$.sample(save_dmetis2$)
+   const save_rmetis1_gp$ = my_rmetis1$.sample(save_rmetis1$)
+   const save_rmetis2_gp$ = my_rmetis2$.sample(save_rmetis2$)
+   const save_hmetis1_gp$ = my_hmetis1$.sample(save_hmetis1$)
+   const save_hmetis2_gp$ = my_hmetis2$.sample(save_hmetis2$)
+   const save_hnmetis1_gp$ = my_hnmetis1$.sample(save_hnmetis1$)
+   const save_hnmetis2_gp$ = my_hnmetis2$.sample(save_hnmetis2$)
+
+   save_dmetis1_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', "dmetis1.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+
+   save_dmetis2_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download',"dmetis2.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+
+   save_rmetis1_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', "rmetis1.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+   save_rmetis2_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download',  "rmetis2.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+   save_hmetis1_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', "hmetis1.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+   save_hmetis2_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', "hmetis2.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+   save_hnmetis1_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', "hnmetis1.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
+   save_hnmetis2_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', "hnmetis2.txt")
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
   const vdom$ = Rx.Observable.combineLatest(
     s_c.DOM, freq_start_c.DOM, pop_size1_c.DOM, pop_size2_c.DOM,
     num_cycles_c.DOM, num_markers_c.DOM,
@@ -307,29 +465,73 @@ export const SelectionDriftApp = (sources) => {
                 <tr><td colSpan="2">
                   <h2>Dominant selection</h2></td></tr>
                 <tr>
-                  <td>{dfreqal1}</td>
-                  <td>{dfreqal2}</td>
+                  <td>
+	               {dfreqal1}
+                       <div style="text-align: center">
+                         <button id={'dmetis1_save'} value="1">Save Genepop</button>
+                       </div>
+	          </td>
+
+                  <td>
+	                 {dfreqal2}
+                          <div style="text-align: center">
+                            <button id={'dmetis2_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
                 </tr>
 
                 <tr><td colSpan="2">
                   <h2>Recessive selection</h2></td></tr>
                 <tr>
-                  <td>{rfreqal1}</td>
-                  <td>{rfreqal2}</td>
+                  <td>
+	    	        {rfreqal1}
+                          <div style="text-align: center">
+                            <button id={'rmetis1_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
+
+                  <td>
+	                {rfreqal2}
+                          <div style="text-align: center">
+                            <button id={'rmetis2_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
                 </tr>
 
                 <tr><td colSpan="2">
                   <h2>Heterozygote advantage</h2></td></tr>
                 <tr>
-                  <td>{hfreqal1}</td>
-                  <td>{hfreqal2}</td>
+                  <td>
+	                 {hfreqal1}
+                          <div style="text-align: center">
+                            <button id={'hmetis1_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
+
+                  <td>
+	                 {hfreqal2}
+                          <div style="text-align: center">
+                            <button id={'hmetis2_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
                 </tr>
 
                 <tr><td colSpan="2">
                   <h2>Heterozygote disadvantage</h2></td></tr>
                 <tr>
-                  <td>{hnfreqal1}</td>
-                  <td>{hnfreqal2}</td>
+                  <td>
+	                 {hnfreqal1}
+                          <div style="text-align: center">
+                            <button id={'hnmetis1_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
+
+                  <td>
+	                 {hnfreqal2}
+                          <div style="text-align: center">
+                            <button id={'hnmetis2_save'} value="1">Save Genepop</button>
+                          </div>
+	          </td>
                 </tr>
 
               </table>
