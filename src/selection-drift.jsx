@@ -330,7 +330,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', "dmetis1.txt")
+    a.setAttribute('download', "dom.select.1.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -344,7 +344,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download',"dmetis2.txt")
+    a.setAttribute('download',"dom.select.2.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -358,7 +358,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', "rmetis1.txt")
+    a.setAttribute('download', "recess.select.1.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -371,7 +371,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download',  "rmetis2.txt")
+    a.setAttribute('download',  "recess.select.2.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -384,7 +384,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', "hmetis1.txt")
+    a.setAttribute('download', "het.advantage.1.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -397,7 +397,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', "hmetis2.txt")
+    a.setAttribute('download', "het.advantage.2.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -410,7 +410,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', "hnmetis1.txt")
+    a.setAttribute('download', "het.disadvantage.1.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
@@ -423,7 +423,7 @@ export const SelectionDriftApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', "hnmetis2.txt")
+    a.setAttribute('download', "het.disadvantage.2.txt")
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
