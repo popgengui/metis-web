@@ -18,6 +18,7 @@ import {
   ops_stats_hz_ExpHe,
   ops_stats_hz_ExpHeDeme,
   ops_stats_NumAl,
+  ops_stats_utils_SaveGenepop,
   ops_wrap_list,
   p_assign_fixed_size_population
 } from '@tiagoantao/metis-sim'
@@ -136,6 +137,11 @@ export const IslandApp = (sources) => {
   const simulate$ = sources.DOM.select('#' + tag)
                            .events('click')
                            .map(ev => parseInt(ev.target.value))
+
+  const save$ = sources
+    .DOM.select('#' + tag + '_save')
+    .events('click')
+    .map(ev => parseInt(ev.target.value))
   
   const metis$ = simulate$.map(_ => {
     const init = {
@@ -145,6 +151,22 @@ export const IslandApp = (sources) => {
     }
     return init
   })
+
+  const save_gp$ = my_metis$.sample(save$)
+
+  save_gp$.subscribe(state => {
+    const op = new ops_stats_utils_SaveGenepop()
+    op.change(state)
+    console.log(state.global_parameters.SaveGenepop)
+    const a = document.createElement('a')
+    a.setAttribute('download', 'structure.island.txt')
+    a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
+
 
   const vdom$ = Rx.Observable.combineLatest(
     marker_type_c.DOM,
@@ -182,6 +204,10 @@ export const IslandApp = (sources) => {
               </table>
               {exphe}
               {dexphe}
+              <br/>
+              <div style="text-align: center">
+                <button id={tag + '_save'} value="1">Save Genepop</button>
+              </div>
             </div>
     )
 

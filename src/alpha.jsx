@@ -162,7 +162,7 @@ export const AlphaApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', 'metis.txt')
+    a.setAttribute('download', 'mating.alpha.male.txt')
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)

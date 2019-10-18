@@ -159,7 +159,7 @@ export const SexRatioApp = (sources) => {
     op.change(state)
     console.log(state.global_parameters.SaveGenepop)
     const a = document.createElement('a')
-    a.setAttribute('download', 'mating_sex_ratio.txt')
+    a.setAttribute('download', 'mating.sex.ratio.txt')
     a.href = 'data:text/plain;charset=utf-8,'+ state.global_parameters.SaveGenepop
     a.style.display = 'none'
     document.body.appendChild(a)
