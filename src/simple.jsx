@@ -1,6 +1,7 @@
 import Rx from 'rxjs/Rx'
 
 import {Plot} from './plot.js'
+import {PlotExpHet} from './plot.exp.het.js'
 import {Selector} from './selector.js'
 import {Slider} from './slider.js'
 
@@ -45,9 +46,31 @@ export const SimpleApp = (sources) => {
 
   const exphe$ = my_metis$.map(state => {
     var cnt = 1
+    /*20191020--Ted added a mean exp het as the last entry
+     * in the list of exp. hz values, computed in class
+     * ops_stats_hz_ExpHe, so that now the
+     * marker list has one more value than the total markers.
+     * Also, the plot code has been modified to plot
+     * the first through ssecond to last Het value
+     * (representing the per-marker expected het vals),
+     * versus the last value, which is the mean of the others,
+     * to plot in different layers to allow custom line formatting
+     * (i.e. dashed for the mean), which property "strokeDash"
+     * (cannot be implenented using the "encoding" entry in the json 
+     * (an issue with vega-lite), which would be the simpler solution.
+     */
+    var num_vals=state.global_parameters.ExpHe.unlinked.length  
+    var idx_last_value=( num_vals < 1 ? 0 : num_vals - 1 )
+    var idx_second_last_value=( num_vals < 2 ? 0 : num_vals - 2 )
+
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
       return {
-        x: state.cycle - 1, y: exphe, marker: 'M' + cnt++}})
+	 
+	      x: state.cycle - 1, 
+	      y: exphe, 
+	      marker: ( cnt == ( num_markers + 1 ) ? "Mean" : 'M' + cnt++ ), 
+	      z: state.global_parameters.ExpHe.unlinked[ num_vals - 1 ] 
+      }})
   })
 
   const sex_ratio$ = my_metis$.map(state => {
@@ -95,7 +118,7 @@ export const SimpleApp = (sources) => {
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 
-  const exphe_plot = Plot(
+  const exphe_plot = PlotExpHet(
     {id: tag + '-exphe', y_label: 'Expected Heterozygosity'},
     {DOM: sources.DOM, vals: exphe$})
 
@@ -170,5 +193,5 @@ export const SimpleApp = (sources) => {
     metis: metis$
   }
   
-  return sinks
+	return sinks
 }
