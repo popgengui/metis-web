@@ -28,7 +28,7 @@ const prepare_sim_state = (tag, pop_size, num_markers, marker_type) => {
     new ops_culling_KillOlderGenerations(),
     new ops_stats_demo_SexStatistics(),
     new ops_stats_NumAl(),
-    new ops_stats_hz_ExpHe()
+    new ops_stats_hz_ExpHe( true )
   ])
   const individuals = create_sex_population(species, pop_size)
   const state = {
@@ -56,20 +56,17 @@ export const SimpleApp = (sources) => {
      * versus the last value, which is the mean of the others,
      * to plot in different layers to allow custom line formatting
      * (i.e. dashed for the mean), which property "strokeDash"
-     * (cannot be implenented using the "encoding" entry in the json 
+     * (cannot be implemented using the "encoding" entry in the json 
      * (an issue with vega-lite), which would be the simpler solution.
      */
     var num_vals=state.global_parameters.ExpHe.unlinked.length  
-    var idx_last_value=( num_vals < 1 ? 0 : num_vals - 1 )
-    var idx_second_last_value=( num_vals < 2 ? 0 : num_vals - 2 )
 
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
       return {
-	 
 	      x: state.cycle - 1, 
-	      y: exphe, 
-	      marker: ( cnt == ( num_markers + 1 ) ? "Mean" : 'M' + cnt++ ), 
-	      z: state.global_parameters.ExpHe.unlinked[ num_vals - 1 ] 
+	      y: exphe,	 
+	      marker: ( cnt == ( num_markers + 1 ) ? "Mean" :  'M' + cnt++ ), 
+	      hemean: state.global_parameters.ExpHe.unlinked[ num_vals - 1 ] 
       }})
   })
 
@@ -106,7 +103,7 @@ export const SimpleApp = (sources) => {
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles',
      label: 'Generations',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -170,6 +167,7 @@ export const SimpleApp = (sources) => {
       ([marker_type, pop_size, num_cycles, num_markers,
         exphe, sex_ratio, numal]) =>
           <div>
+	    <h2>Wright-Fisher with Sex</h2>
             <div style="text-align: center">
               {marker_type}
               {pop_size}

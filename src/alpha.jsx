@@ -110,7 +110,7 @@ export const AlphaApp = (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'generations:',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -180,6 +180,7 @@ export const AlphaApp = (sources) => {
 			 num_markers,
                          exphe, sex_ratio, ne, numal]) =>
                     <div>
+			  <h2>Mating, Alpha Male</h2>
                       <div>
                         {marker_type}
 			{perc_alpha}

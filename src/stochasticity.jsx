@@ -82,7 +82,7 @@ export const StochasticityApp = (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'Generations',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -135,6 +135,7 @@ export const StochasticityApp = (sources) => {
                   .map(([freq_start, pop_size, num_cycles,
 			 freqal]) =>
                     <div>
+		     <h2>Drift at One Locus</h2>
                       <div>
                         {freq_start}
                         {pop_size}

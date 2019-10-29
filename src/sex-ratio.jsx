@@ -108,7 +108,7 @@ export const SexRatioApp = (sources) => {
   
   const num_cycles_c = Slider({DOM: sources.DOM},
                               {className: '.' + tag + '-num_cycles', label: 'Generations',
-                               step: 10, min: 10, value: 20, max: 200})
+                               step: 10, min: 2, value: 20, max: 200})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -177,6 +177,7 @@ export const SexRatioApp = (sources) => {
 			 num_markers,
                          exphe, sex_ratio, ne, numal]) =>
                     <div>
+			  <h2>Mating, Sex-ratio</h2>
                       <div>
                         {marker_type}
 			{frac_males}

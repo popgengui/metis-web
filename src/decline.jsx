@@ -114,7 +114,7 @@ export const DeclineApp = (sources) => {
   
   const num_cycles_c = Slider({DOM: sources.DOM},
                               {className: '.' + tag + '-num_cycles', label: 'Generations',
-                               step: 10, min: 10, value: 200, max: 500})
+                               step: 10, min: 2, value: 200, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -166,6 +166,7 @@ export const DeclineApp = (sources) => {
                exphe_table,
                exphe, numal]) =>
                     <div>
+		      <h2>Fluctuations, Decline or Expansion</h2>
                       <div>
                         {marker_type}
                         {start_pop_size}

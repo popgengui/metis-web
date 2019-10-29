@@ -97,7 +97,7 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'Generations',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -119,7 +119,28 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
   const simulate$ = sources.DOM.select('#' + tag)
                            .events('click')
                            .map(ev => parseInt(ev.target.value))
-  
+
+  /* 2019_10_28.  Ted added a variable so we can have standard
+   * capitalized titles for these sim interfaces, to match the
+   * others.
+   */
+  var simTitle="Selection type"
+  switch ( sel_type )
+  {
+    case 'dominant':
+        simTitle="Dominant"
+	break
+    case 'recessive':
+        simTitle="Recessive"
+	break
+    case 'hz':
+	simTitle="Heterozygote Overdominance"
+	break
+    case 'hnz':
+	simTitle="Heterozygote Underdominance"
+	break
+  }//end switch
+
   const metis$ = simulate$.map(_ => {
     let sel = null
     switch (sel_type) {
@@ -151,7 +172,7 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
       ([s, freq_start, pop_size, num_cycles, num_markers,
         exphe, numal]) =>
           <div>
-            <h1>Selection {sel_type}</h1>
+            <h2>Selection, {simTitle}</h2>
             <div>
               {s}
               {freq_start}

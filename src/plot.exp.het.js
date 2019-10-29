@@ -22,6 +22,7 @@ const plot_spec = conf => {
         "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
         "description": "${cf.desc}",
         "title": "${cf.title}",
+	"config": { "legend":{ "columns" : 3, "symbolType":"circle" } },
         "data": {
             "name": "lines"
         },
@@ -43,7 +44,7 @@ const plot_spec = conf => {
 		"mark": { "type":"line", "strokeDash":[], "strokeWidth":3.0 },
 		"encoding":{
 			"x":{ "field": "x", "type": "quantitative" },
-			"y":{ "field": "z", "type":"quantitative" },
+			"y":{ "field": "hemean", "type":"quantitative" },
 			"color":{ "field" : "marker", "type":"nominal" }}
 	}
     ]
@@ -94,7 +95,7 @@ export const PlotExpHet = (conf, sources) => {
 
     const state$ = vals$
           .map(val => {
-              return val.map(p => {return {x: p.x, y: p.y, marker: p.marker, z:p.z}})
+              return val.map(p => {return {x: p.x, y: p.y, marker: p.marker, hemean:p.hemean}})
           })
 
     state$.subscribe(poses => {

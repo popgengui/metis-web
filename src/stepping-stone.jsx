@@ -123,7 +123,7 @@ export const SteppingStoneApp = (sources) => {
   
   const num_cycles_c = Slider({DOM: sources.DOM},
                               {className: '.' + tag + '-num_cycles', label: 'Generations',
-                               step: 10, min: 10, value: 20, max: 500})
+                               step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -189,6 +189,7 @@ export const SteppingStoneApp = (sources) => {
                          num_cycles, num_markers,
                          exphe, pexphe, cexphe]) =>
                            <div>
+			      <h2>Structure, Stepping-stone</h2>
                              <div>
                                {marker_type}
                                {deme_size}

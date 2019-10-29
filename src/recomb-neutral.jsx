@@ -115,7 +115,7 @@ export const RecombNeutralApp = (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'Generations',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -172,6 +172,7 @@ export const RecombNeutralApp = (sources) => {
                          freqal, exphe, numal]
                   ) =>
                     <div>
+			  <h2>Recombination, Neutral</h2>
                       <div style="text-align: center">
                         {freq_start}
                         {pop_size}

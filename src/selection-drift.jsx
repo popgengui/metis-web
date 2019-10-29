@@ -168,7 +168,7 @@ export const SelectionDriftApp = (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'generations:',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -445,6 +445,7 @@ export const SelectionDriftApp = (sources) => {
         hfreqal1, hfreqal2,
         hnfreqal1, hnfreqal2]) =>
           <div>
+	    <h2>Interactions, Selection and Drift</h2>
             <div>
               {s}
               {freq_start}

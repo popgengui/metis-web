@@ -6,6 +6,7 @@ import {
 } from './sim.js'
 
 import {Plot} from './plot.js'
+import {PlotExpHet} from './plot.exp.het.js'
 import {Selector} from './selector.js'
 import {Slider} from './slider.js'
 import {Table} from './table.js'
@@ -33,8 +34,8 @@ const prepare_sim_state = (
       new ops_culling_KillOlderGenerations(),
       new ops_p_MigrationIslandFixed(num_migs),
       new ops_stats_demo_SexStatistics(),
-      new ops_stats_hz_ExpHe(),
-      new ops_stats_hz_ExpHeDeme()
+      new ops_stats_hz_ExpHe( true ),
+      new ops_stats_hz_ExpHeDeme( true )
     ])
     const individuals = create_sex_population(species, deme_size*num_demes)
     p_assign_fixed_size_population(individuals, num_demes)
@@ -54,16 +55,27 @@ export const IslandApp = (sources) => {
 
   const exphe$ = my_metis$.map(state => {
     var cnt = 1
+    var num_vals=state.global_parameters.ExpHe.unlinked.length
+    var mean_val=state.global_parameters.ExpHe.unlinked[ num_vals - 1 ]
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
       return {
-        x: state.cycle - 1, y: exphe, marker: 'M' + cnt++}})
+	      x: state.cycle - 1, 
+	      y: exphe,
+	      hemean: mean_val,
+	      marker: cnt === num_markers + 1 ? 'Mean': 'M' + cnt++}})
   })
 
   const dexphe$ = my_metis$.map(state => {
     var cnt = 1
+    var num_vals=state.global_parameters.DemeExpHe[0].unlinked.length
+    var mean_val=state.global_parameters.DemeExpHe[0].unlinked[ num_vals - 1 ]
+
     return state.global_parameters.DemeExpHe[0].unlinked.map(exphe => {
       return {
-        x: state.cycle - 1, y: exphe, marker: 'M' + cnt++}})
+	      x: state.cycle - 1, 
+	      y: exphe, 
+	      hemean: mean_val,
+	      marker: cnt === num_markers + 1 ? 'Mean' : 'M' + cnt++}})
   })
     
   const marker_type_c = Selector(
@@ -98,14 +110,14 @@ export const IslandApp = (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'Generations',
-     step: 10, min: 10, value: 20, max: 500})
+     step: 10, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
   const num_markers_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_markers', label: 'Number of markers',
-     step: 1, min: 1, value: 4, max: 100})
+     step: 1, min: 1, value: 4, max: 20})
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 
@@ -126,11 +138,11 @@ export const IslandApp = (sources) => {
 
   
 
-  const exphe_plot = Plot(
+  const exphe_plot = PlotExpHet(
     {id: tag + '-exphe', y_label: 'Expected Hz - Meta population'},
     {DOM: sources.DOM, vals: exphe$})
 
-  const dexphe_plot = Plot(
+  const dexphe_plot = PlotExpHet(
     {id: tag + '-dexphe', y_label: 'Expected Hz - A Deme'},
     {DOM: sources.DOM, vals: dexphe$})
 
@@ -180,6 +192,7 @@ export const IslandApp = (sources) => {
         hs_html, ht_html,
         exphe, dexphe]) =>
           <div>
+	    <h2>Structure, Island</h2>
             <div>
               {marker_type}
               {num_demes}
