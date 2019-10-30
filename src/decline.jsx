@@ -131,7 +131,7 @@ export const DeclineApp = (sources) => {
     {DOM: sources.DOM,
      data: exphe_clean$.startWith([])},
     {fields: ['marker', 'exp_he'],
-     headers: ['Marker', 'Expected Hz']}
+     headers: ['Marker', 'Expected Heterozygosity']}
   )
 
   const exphe_plot = Plot(
