@@ -10,11 +10,13 @@ import {
   create_unlinked_species
 } from './sim.js'
 
+/* 2019_10_30. Ted adds allele frequency plot.*/
 import {
   ops_culling_KillOlderGenerations,
   ops_rep_SexualReproduction,
   ops_stats_demo_SexStatistics,
   ops_stats_hz_ExpHe,
+  ops_stats_FreqAl,
   ops_stats_NumAl,
   ops_stats_utils_SaveGenepop,
   ops_wrap_list
@@ -27,6 +29,7 @@ const prepare_sim_state = (tag, pop_size, num_markers, marker_type) => {
     new ops_rep_SexualReproduction(species, pop_size),
     new ops_culling_KillOlderGenerations(),
     new ops_stats_demo_SexStatistics(),
+    new ops_stats_FreqAl(),
     new ops_stats_NumAl(),
     new ops_stats_hz_ExpHe( true )
   ])
@@ -43,6 +46,14 @@ export const SimpleApp = (sources) => {
 
   const my_metis$ = sources.metis.filter(
     state => state.global_parameters.tag === tag)
+
+  /*Ted adds allele freq plot*/
+  const freqal$ = my_metis$.map(state => {
+    var cnt = 1
+    return state.global_parameters.FreqAl.unlinked.map(freqal => {
+      return {
+        x: state.cycle - 1, y: freqal, marker: 'M' + cnt++}})
+  })
 
   const exphe$ = my_metis$.map(state => {
     var cnt = 1
@@ -115,6 +126,11 @@ export const SimpleApp = (sources) => {
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 
+  const freqal_plot = Plot(
+    {id: tag + '-freqal', y_label: 'Allele Frequency'},
+    {DOM: sources.DOM, vals: freqal$})
+
+
   const exphe_plot = PlotExpHet(
     {id: tag + '-exphe', y_label: 'Expected Heterozygosity'},
     {DOM: sources.DOM, vals: exphe$})
@@ -159,11 +175,12 @@ export const SimpleApp = (sources) => {
     a.click()
     document.body.removeChild(a)
   })
+  /* 2019_10_30. Ted adds an allele-freq plot*/
 
   const vdom$ = Rx.Observable.combineLatest(
     marker_type_c.DOM, pop_size_c.DOM,
     num_cycles_c.DOM, num_markers_c.DOM,
-    exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
+    freqal_plot.DOM, exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
       ([marker_type, pop_size, num_cycles, num_markers,
         exphe, sex_ratio, numal]) =>
           <div>
@@ -175,7 +192,9 @@ export const SimpleApp = (sources) => {
               {num_markers}
               <br/>
               <button id={tag} value="1">Simulate</button>
+	      <br/>
             </div>
+	    {freqal_plot}
             {exphe}
             {sex_ratio}
             {numal}

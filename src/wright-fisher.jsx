@@ -21,6 +21,7 @@ import {
   ops_RxOperator,  // Currently not in use
   ops_stats_demo_SexStatistics,
   ops_stats_hz_ExpHe,
+  ops_stats_FreqAl,
   ops_stats_NumAl,
   ops_wrap_list,
   p_generate_n_inds,
@@ -40,6 +41,7 @@ const prepare_sim_state = (tag, pop_size, num_markers, marker_type) => {
     new ops_culling_KillOlderGenerations(),
     new ops_stats_demo_SexStatistics(),
     new ops_stats_NumAl(),
+    new ops_stats_FreqAl(),
     new ops_stats_hz_ExpHe()
   ])
   const individuals = p_generate_n_inds(pop_size, () =>
@@ -58,6 +60,14 @@ export const WFApp = (sources) => {
 
   const my_metis$ = sources.metis.filter(
     state => state.global_parameters.tag === tag)
+
+  /* 2019_10_30 Ted adds allele freq plot to this interface*/
+  const freqal$ = my_metis$.map(state => {
+    var cnt = 1
+    return state.global_parameters.FreqAl.unlinked.map(freqal => {
+      return {
+        x: state.cycle - 1, y: freqal, marker: 'M' + cnt++}})
+  })
 
   const exphe$ = my_metis$.map(state => {
     var cnt = 1
@@ -106,6 +116,11 @@ export const WFApp = (sources) => {
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 
+  const freqal_plot = Plot(
+    {id: tag + '-freqal', y_label: 'Allele Frequency'},
+    {DOM: sources.DOM, vals: freqal$})
+
+
   const exphe_plot = Plot(
     {id: tag + '-exphe', y_label: 'Expected Heterozygosity',
     title: 'Expected Heterozygosity'},
@@ -133,11 +148,11 @@ export const WFApp = (sources) => {
       }
     return init
   })
-
+  /* 2019_10_30  Ted adds an allele-freq plot*/
   const vdom$ = Rx.Observable.combineLatest(
     marker_type_c.DOM, pop_size_c.DOM,
     num_cycles_c.DOM, num_markers_c.DOM,
-    exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
+    freqal_plot.DOM, exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
       ([marker_type, pop_size, num_cycles, num_markers,
         exphe, sex_ratio, numal]) =>
           <div>
@@ -152,6 +167,7 @@ export const WFApp = (sources) => {
                 <button id={tag} value="1">Simulate</button>
               </div>
             </div>
+	    {freqal_plot}
             {exphe}
             {sex_ratio}
             {numal}
