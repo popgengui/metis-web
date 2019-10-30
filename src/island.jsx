@@ -126,24 +126,24 @@ export const IslandApp = (sources) => {
     {DOM: sources.DOM,
      data: exphe$.startWith([])},
     {fields: ['y', 'marker'],
-     headers: ['Expected Hz', 'Marker']}
+     headers: ['Expected Heterozygosity', 'Marker']}
   )
 
   const hs_table = Table(
     {DOM: sources.DOM,
      data: dexphe$.startWith([])},
     {fields: ['y', 'marker'],
-     headers: ['Expected Hz', 'Marker']}
+     headers: ['Expected Heterozygosity', 'Marker']}
   )
 
   
 
   const exphe_plot = PlotExpHet(
-    {id: tag + '-exphe', y_label: 'Expected Hz - Meta population'},
+    {id: tag + '-exphe', y_label: 'Expected Heterozygosity - Meta population'},
     {DOM: sources.DOM, vals: exphe$})
 
   const dexphe_plot = PlotExpHet(
-    {id: tag + '-dexphe', y_label: 'Expected Hz - A Deme'},
+    {id: tag + '-dexphe', y_label: 'Expected Heterozygosity - A Deme'},
     {DOM: sources.DOM, vals: dexphe$})
 
   const simulate$ = sources.DOM.select('#' + tag)
@@ -204,6 +204,7 @@ export const IslandApp = (sources) => {
               <div style="text-align: center">
                 <button id={tag} value="1">Simulate</button>
               </div>
+	      <br/>
             </div>
               <table align="center">
                 <tr>

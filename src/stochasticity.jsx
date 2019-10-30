@@ -66,7 +66,7 @@ export const StochasticityApp = (sources) => {
   const freq_start_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-freq_start',
-     label: 'Starting frequency of the derived allele (%)',
+     label: 'Starting frequency of the allele (%)',
      step: 1, min: 1, value: 50, max: 99})
   let freq_start
   freq_start_c.value.subscribe(v => freq_start = v)
@@ -88,7 +88,7 @@ export const StochasticityApp = (sources) => {
 
   const freqal_plot = Plot(
     {clean: false,
-     id: tag + '-freqal', y_label: 'Frequency of Derived Allele'},
+     id: tag + '-freqal', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: freqal$})
   
   const simulate$ = sources.DOM.select('#' + tag)
@@ -141,7 +141,8 @@ export const StochasticityApp = (sources) => {
                         {pop_size}
                         {num_cycles}
                         <br/>
-                        <button id={tag} value="1">Simulate</button>
+                        <center><button id={tag} value="1">Simulate</button></center>
+			<br/>
                       </div>
 		      {freqal}
                        <br/>

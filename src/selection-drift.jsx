@@ -145,7 +145,7 @@ export const SelectionDriftApp = (sources) => {
   const freq_start_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-freq_start',
-     label: 'Starting frequency of the derived (selected) allele (%)',
+     label: 'Starting frequency of the (selected) allele (%)',
      step: 1, min: 1, value: 50, max: 99})
   let freq_start
   freq_start_c.value.subscribe(v => freq_start = v)
@@ -180,28 +180,28 @@ export const SelectionDriftApp = (sources) => {
   num_markers_c.value.subscribe(v => num_markers = v)
 
   const dfreqal1_plot = Plot(
-    {id: tag + '-dfreqal1', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-dfreqal1', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: dfreqal1$})
   const dfreqal2_plot = Plot(
-    {id: tag + '-dfreqal2', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-dfreqal2', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: dfreqal2$})
   const rfreqal1_plot = Plot(
-    {id: tag + '-rfreqal1', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-rfreqal1', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: rfreqal1$})
   const rfreqal2_plot = Plot(
-    {id: tag + '-rfreqal2', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-rfreqal2', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: rfreqal2$})
   const hfreqal1_plot = Plot(
-    {id: tag + '-hfreqal1', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-hfreqal1', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: hfreqal1$})
   const hfreqal2_plot = Plot(
-    {id: tag + '-hfreqal2', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-hfreqal2', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: hfreqal2$})
   const hnfreqal1_plot = Plot(
-    {id: tag + '-hnfreqal1', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-hnfreqal1', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: hnfreqal1$})
   const hnfreqal2_plot = Plot(
-    {id: tag + '-hnfreqal2', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-hnfreqal2', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: hnfreqal2$})
 
   
@@ -500,7 +500,7 @@ export const SelectionDriftApp = (sources) => {
                 </tr>
 
                 <tr><td colSpan="2">
-                  <h2>Heterozygote advantage</h2></td></tr>
+                  <h2>Selection for heterozygotes (overdominance)</h2></td></tr>
                 <tr>
                   <td>
 	                 {hfreqal1}
@@ -518,7 +518,7 @@ export const SelectionDriftApp = (sources) => {
                 </tr>
 
                 <tr><td colSpan="2">
-                  <h2>Heterozygote disadvantage</h2></td></tr>
+                  <h2>Selection against heterozygotes (underdominance)</h2></td></tr>
                 <tr>
                   <td>
 	                 {hnfreqal1}

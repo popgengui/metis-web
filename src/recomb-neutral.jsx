@@ -135,7 +135,7 @@ export const RecombNeutralApp = (sources) => {
     {DOM: sources.DOM,
      data: exphe_timefix$.startWith([])},
     {fields: ['marker', 'cycle', 'exp_he'],
-     headers: ['Marker', 'Fixation cycle', 'Expected Hz']}
+     headers: ['Marker', 'Fixation generation', 'Expected Heterozygosity']}
   )
   
   const exphe_plot = Plot(
@@ -183,7 +183,7 @@ export const RecombNeutralApp = (sources) => {
                           <button id={tag} value="1">Simulate</button>
                         </div>
                       </div>
-                      <h2>Time to fixation and Expected Hz</h2>
+                      <h3><center>Time to fixation and Expected Heterozygosity</center></h3>
                       {time_html}
                       {freqal}
                       {exphe}

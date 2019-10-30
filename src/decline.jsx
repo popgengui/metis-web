@@ -179,7 +179,7 @@ export const DeclineApp = (sources) => {
                           <button id={tag} value="1">Simulate</button>
                         </div>
                       </div>
-                      <h2>Expected Heterozygosity</h2>
+                      <h3><center>Expected Heterozygosity</center></h3>
                       {exphe_table}
                       {exphe}
                       {numal}

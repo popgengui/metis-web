@@ -101,7 +101,7 @@ export const SimpleFreqApp = (sources) => {
   const freq_start_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-freq_start',
-     label: 'Starting frequency of the derived allele (%)',
+     label: 'Starting frequency of the allele (%)',
      step: 1, min: 1, value: 50, max: 99})
   let freq_start
   freq_start_c.value.subscribe(v => freq_start = v)
@@ -129,14 +129,14 @@ export const SimpleFreqApp = (sources) => {
   num_markers_c.value.subscribe(v => num_markers = v)
 
   const freqal_plot = Plot(
-    {id: tag + '-freqal', y_label: 'Frequency of Derived Allele'},
+    {id: tag + '-freqal', y_label: 'Allele Frequency'},
     {DOM: sources.DOM, vals: freqal$})
 
   const timefix_table = Table(
     {DOM: sources.DOM,
      data: exphe_timefix$.startWith([])},
     {fields: ['marker', 'cycle', 'exp_he'],
-     headers: ['Marker', 'Fixation cycle', 'Expected Hz']}
+     headers: ['Marker', 'Fixation generation', 'Expected Heterozygosity']}
   )
   
   const exphe_plot = Plot(
@@ -184,7 +184,7 @@ export const SimpleFreqApp = (sources) => {
                           <button id={tag} value="1">Simulate</button>
                         </div>
                       </div>
-                      <h2>Time to fixation and Expected Hz</h2>
+                      <h3><center>Time to fixation and Expected Heterozygosity</center></h3>
                       {time_html}
                       {freqal}
                       {exphe}

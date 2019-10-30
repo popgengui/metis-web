@@ -82,7 +82,7 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
   const freq_start_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-freq_start',
-     label: 'Starting frequency of the derived (selected) allele (%)',
+     label: 'Starting frequency of the (selected) allele (%)',
      step: 1, min: 1, value: 50, max: 99})
   let freq_start
   freq_start_c.value.subscribe(v => freq_start = v)
@@ -97,13 +97,13 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
   const num_cycles_c = Slider(
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles', label: 'Generations',
-     step: 10, min: 2, value: 20, max: 500})
+     step: 1, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
   const num_markers_c = Slider(
     {DOM: sources.DOM},
-    {className: '.' + tag + '-num_markers', label: 'Number of markers',
+    {className: '.' + tag + '-num_markers', label: 'Number of markers (first one is under selection)',
      step: 1, min: 1, value: 4, max: 100})
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
@@ -128,16 +128,16 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
   switch ( sel_type )
   {
     case 'dominant':
-        simTitle="Dominant"
+        simTitle=", Dominant"
 	break
     case 'recessive':
-        simTitle="Recessive"
+        simTitle=", Recessive"
 	break
     case 'hz':
-	simTitle="Heterozygote Overdominance"
+	simTitle=" For Heterozygotes (Overdominance)"
 	break
     case 'hnz':
-	simTitle="Heterozygote Underdominance"
+	simTitle=" Against Heterozygotes (Underdominance)"
 	break
   }//end switch
 
@@ -157,6 +157,7 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
         sel = {0: 1, 1: 1 - s, 2: 1}
         break
     }
+
     const init = {
       num_cycles, state: prepare_sim_state(
         tag, pop_size, num_markers, freq_start, sel, 'unlinked', 0)
@@ -172,7 +173,7 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
       ([s, freq_start, pop_size, num_cycles, num_markers,
         exphe, numal]) =>
           <div>
-            <h2>Selection, {simTitle}</h2>
+            <h2>Selection{simTitle}</h2>
             <div>
               {s}
               {freq_start}
@@ -184,6 +185,7 @@ export const SelectionAppFactory = (sel_type) => (sources) => {
 
                 <button id={tag} value="1">Simulate</button>
               </div>
+	      <br/>
             </div>
             {exphe}
             {numal}

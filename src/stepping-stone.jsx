@@ -134,15 +134,15 @@ export const SteppingStoneApp = (sources) => {
   num_markers_c.value.subscribe(v => num_markers = v)
 
   const exphe_plot = Plot(
-    {id: tag + '-exphe', y_label: 'Expected Hz - Meta population'},
+    {id: tag + '-exphe', y_label: 'Expected Heterozygosity - Meta population'},
     {DOM: sources.DOM, vals: exphe$})
 
   const pexphe_plot = Plot(
-    {id: tag + '-pexphe', y_label: 'Expected Hz - Peripheral Deme'},
+    {id: tag + '-pexphe', y_label: 'Expected Heterozygosity - Peripheral Deme'},
     {DOM: sources.DOM, vals: pexphe$})
 
   const cexphe_plot = Plot(
-    {id: tag + '-cexphe', y_label: 'Expected Hz - Cosmopolitan Deme'},
+    {id: tag + '-cexphe', y_label: 'Expected Heterozygosity - Cosmopolitan Deme'},
     {DOM: sources.DOM, vals: cexphe$})
   
   const simulate$ = sources.DOM.select('#' + tag)
@@ -199,7 +199,8 @@ export const SteppingStoneApp = (sources) => {
                                {num_cycles}
                                {num_markers}
                                <br/>
-                               <button id={tag} value="1">Simulate</button>
+                               <center><button id={tag} value="1">Simulate</button></center>
+			       <br/>
                              </div>
                              {exphe}
                              {pexphe}

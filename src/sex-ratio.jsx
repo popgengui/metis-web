@@ -185,7 +185,8 @@ export const SexRatioApp = (sources) => {
                         {num_cycles}
                         {num_markers}
                         <br/>
-                        <button id={tag} value="1">Simulate</button>
+                        <center><button id={tag} value="1">Simulate</button></center>
+			<br/>
                       </div>
                       {exphe}
 		      {sex_ratio}
