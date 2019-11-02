@@ -10,7 +10,16 @@ import {div} from '@cycle/dom'
 import * as vg from 'vega'
 import * as vl from 'vega-lite'
 
+/*This for convenient trials.
+ * The original value was 600*/
+let viewWidth=600
 
+/* Note the addition of the "autosize" property, setting its "resize"
+ * If set to "true", the legend will accomodate longer text horiz.,
+ * and also list all markers vertically, creating an absurdly long
+ * legend column when there are hundreds of them.  I could not create
+ * a mulit-column legend (??), via online docs.
+ */
 const plot_spec = conf => {
     const cf = Object.assign({}, conf)
     cf.desc = cf.desc || ''
@@ -21,8 +30,9 @@ const plot_spec = conf => {
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
         "description": "${cf.desc}",
+	"autosize":{ "resize":false },
         "title": "${cf.title}",
-	"config": { "legend":{ "columns" : 3, "symbolType":"circle" } },
+	"legend":{ "columns":3 },
         "data": {
             "name": "lines"
         },
@@ -39,13 +49,15 @@ const plot_spec = conf => {
 			  "type": "quantitative"},
 		    "color": {"field": "marker", "type": "nominal"}
 		}
+
 	},
 	{
 		"mark": { "type":"line", "strokeDash":[], "strokeWidth":3.0 },
 		"encoding":{
 			"x":{ "field": "x", "type": "quantitative" },
-			"y":{ "field": "hemean", "type":"quantitative" },
-			"color":{ "field" : "marker", "type":"nominal" }}
+			"y":{ "field": "hemean", "type":"quantitative" }, 
+		        "color": { "field": "marker", "type": "nominal" } 
+		}
 	}
     ]
     }`}
@@ -53,7 +65,7 @@ const plot_spec = conf => {
 
 const prepare_plot = (vl_text, conf, points, cb) => {
     const vl_json = JSON.parse(vl_text)
-    vl_json.width = conf.width || 600
+    vl_json.width = conf.width || viewWidth
     vl_json.height = vl_json.width - vl_json.width / 4
     const vg_spec = vg.parse(vl.compile(vl_json).spec)
 
@@ -67,17 +79,14 @@ const prepare_plot = (vl_text, conf, points, cb) => {
     return view
 }
 
-
 const update_plot = (view, points) => {
     view.insert('lines', points).run()
     //document.getElementById('vega').style.display = 'none'
 }
 
-
 const clean_plot = (view) => {
     view.remove('lines', _ => true).run()
 }
-
 
 export const PlotExpHet = (conf, sources) => {
     const where = conf.id

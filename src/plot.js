@@ -3,7 +3,14 @@ import {div} from '@cycle/dom'
 import * as vg from 'vega'
 import * as vl from 'vega-lite'
 
+/*Original value for this is 600*/
+let defaultPlotWidth=600
 
+/* 2019_11_01 -- Ted adds auto size property, if set to true
+ * then put plots inside elements using className=plotstyle 
+ * (c.f. metisstyles.css)  or the legend, when hundreds+ 
+ * of markers are used, will * absurdly lengthen the page.
+ */
 const plot_spec = conf => {
     const cf = Object.assign({}, conf)
     cf.desc = cf.desc || ''
@@ -14,6 +21,7 @@ const plot_spec = conf => {
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
         "description": "${cf.desc}",
+	"autosize":{ "resize":false },
         "title": "${cf.title}",
         "data": {
             "name": "lines"
@@ -34,7 +42,7 @@ const plot_spec = conf => {
 
 const prepare_plot = (vl_text, conf, points, cb) => {
     const vl_json = JSON.parse(vl_text)
-    vl_json.width = conf.width || 600
+    vl_json.width = conf.width || defaultPlotWidth
     vl_json.height = vl_json.width - vl_json.width / 4
     const vg_spec = vg.parse(vl.compile(vl_json).spec)
 

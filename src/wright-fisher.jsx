@@ -154,7 +154,7 @@ export const WFApp = (sources) => {
     num_cycles_c.DOM, num_markers_c.DOM,
     freqal_plot.DOM, exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
       ([marker_type, pop_size, num_cycles, num_markers,
-        exphe, sex_ratio, numal]) =>
+        freqal_plot, exphe, sex_ratio, numal]) =>
           <div>
             <h2>The Wright-Fisher Model</h2>
             <div>

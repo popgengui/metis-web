@@ -4,6 +4,8 @@ import {Plot} from './plot.js'
 import {PlotExpHet} from './plot.exp.het.js'
 import {Selector} from './selector.js'
 import {Slider} from './slider.js'
+/*adding a plot style*/
+import './metisstyles.css'
 
 import {
   create_sex_population,
@@ -21,7 +23,6 @@ import {
   ops_stats_utils_SaveGenepop,
   ops_wrap_list
 } from '@tiagoantao/metis-sim'
-
 
 const prepare_sim_state = (tag, pop_size, num_markers, marker_type) => {
   const species = create_unlinked_species(num_markers, marker_type)
@@ -175,14 +176,23 @@ export const SimpleApp = (sources) => {
     a.click()
     document.body.removeChild(a)
   })
+
+  
+
   /* 2019_10_30. Ted adds an allele-freq plot*/
+
+  
 
   const vdom$ = Rx.Observable.combineLatest(
     marker_type_c.DOM, pop_size_c.DOM,
     num_cycles_c.DOM, num_markers_c.DOM,
     freqal_plot.DOM, exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
       ([marker_type, pop_size, num_cycles, num_markers,
-        exphe, sex_ratio, numal]) =>
+        freqal_plot, exphe, sex_ratio, numal]) =>
+	  <html>
+	  <head>
+	  </head>
+          <body>
           <div>
 	    <h2>Wright-Fisher with Sex</h2>
             <div style="text-align: center">
@@ -194,15 +204,41 @@ export const SimpleApp = (sources) => {
               <button id={tag} value="1">Simulate</button>
 	      <br/>
             </div>
-	    {freqal_plot}
-            {exphe}
-            {sex_ratio}
-            {numal}
+	    <div>
+	       <center>
+	       <p className="plotstyle">
+                 {freqal_plot}
+	       </p>
+	        </center>
+	    </div>
+	    <div>
+	       <center>
+	       <p className="plotstyle"> 
+                    {exphe}
+	       </p>
+	       </center>
+	    </div>
+	    <div>
+		    <center>
+		       <p className="plotstyle">
+			{sex_ratio}
+		       </p>
+		    </center>
+	    </div>
+	    <div>
+	        <center>
+	        <p className="plotstyle">
+	          {numal}
+	        </p>
+	        </center>
+	     </div>
             <br/>
             <div style="text-align: center">
               <button id={tag + '_save'} value="1">Save Genepop</button>
             </div>
           </div>
+	  </body>
+	 </html>
     )
 
   const sinks = {
