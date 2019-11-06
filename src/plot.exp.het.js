@@ -19,6 +19,9 @@ let viewWidth=600
  * and also list all markers vertically, creating an absurdly long
  * legend column when there are hundreds of them.  I could not create
  * a mulit-column legend (??), via online docs.
+ *
+ * 2019_11_05  Ted adds a third layer that plots the final values
+ * to the right of each line-end.
  */
 const plot_spec = conf => {
     const cf = Object.assign({}, conf)
@@ -32,7 +35,6 @@ const plot_spec = conf => {
         "description": "${cf.desc}",
 	"autosize":{ "resize":false },
         "title": "${cf.title}",
-	"legend":{ "columns":3 },
         "data": {
             "name": "lines"
         },
@@ -57,6 +59,21 @@ const plot_spec = conf => {
 			"x":{ "field": "x", "type": "quantitative" },
 			"y":{ "field": "hemean", "type":"quantitative" }, 
 		        "color": { "field": "marker", "type": "nominal" } 
+		}
+	},
+	{
+		"mark":{ 
+			"type": "text",
+			"align": "right",
+			"baseline": "middle",
+			"dx":15,
+			"fontWeight":"bold"
+		},
+		"encoding":{
+			"x":{ "field":"xplus", "type":"quantitative" },
+			"y":{ "field":"y", "type":"quantitative" },
+			"text":{ "field": "ytext", "type":"nominal"}
+
 		}
 	}
     ]
@@ -104,7 +121,7 @@ export const PlotExpHet = (conf, sources) => {
 
     const state$ = vals$
           .map(val => {
-              return val.map(p => {return {x: p.x, y: p.y, marker: p.marker, hemean:p.hemean}})
+              return val.map(p => {return {x: p.x, y: p.y, marker: p.marker, hemean:p.hemean, xplus:p.xplus, ytext:p.ytext}})
           })
 
     state$.subscribe(poses => {

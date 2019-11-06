@@ -4,7 +4,7 @@ import {Plot} from './plot.js'
 import {PlotExpHet} from './plot.exp.het.js'
 import {Selector} from './selector.js'
 import {Slider} from './slider.js'
-/*adding a plot style*/
+/*20191101 Ted adds a plot style*/
 import './metisstyles.css'
 
 import {
@@ -58,6 +58,7 @@ export const SimpleApp = (sources) => {
 
   const exphe$ = my_metis$.map(state => {
     var cnt = 1
+    var cnt2 = 0
     /*20191020--Ted added a mean exp het as the last entry
      * in the list of exp. hz values, computed in class
      * ops_stats_hz_ExpHe, so that now the
@@ -71,14 +72,24 @@ export const SimpleApp = (sources) => {
      * (cannot be implemented using the "encoding" entry in the json 
      * (an issue with vega-lite), which would be the simpler solution.
      */
-    var num_vals=state.global_parameters.ExpHe.unlinked.length  
-
+    var num_vals = state.global_parameters.ExpHe.unlinked.length  
+    /* 2019_11_05.  Ted adds a third plot layer, which plots the
+     * final values to the right of the line-ends
+     */
+    var final_cycle_number = num_cycles + 2
+    var x_axis_text_offset = Math.round( 0.1 * num_cycles )
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
       return {
 	      x: state.cycle - 1, 
 	      y: exphe,	 
 	      marker: ( cnt == ( num_markers + 1 ) ? "Mean" :  'M' + cnt++ ), 
-	      hemean: state.global_parameters.ExpHe.unlinked[ num_vals - 1 ] 
+	      hemean: state.global_parameters.ExpHe.unlinked[ num_vals - 1 ],
+	      xplus: state.cycle + 2 + x_axis_text_offset,
+	      ytext:  state.cycle === final_cycle_number ? 
+	      				cnt2 === ( num_vals - 1 ) ?
+	      					 "Mean: " + state.global_parameters.ExpHe.unlinked[ cnt2++ ].toFixed(2) 
+	      					 : state.global_parameters.ExpHe.unlinked[ cnt2++ ].toFixed(2) 
+	      				: ""
       }})
   })
 
@@ -115,7 +126,7 @@ export const SimpleApp = (sources) => {
     {DOM: sources.DOM},
     {className: '.' + tag + '-num_cycles',
      label: 'Generations',
-     step: 10, min: 2, value: 20, max: 500})
+     step: 1, min: 2, value: 20, max: 500})
   let num_cycles
   num_cycles_c.value.subscribe(v => num_cycles = v)
 
@@ -180,8 +191,6 @@ export const SimpleApp = (sources) => {
   
 
   /* 2019_10_30. Ted adds an allele-freq plot*/
-
-  
 
   const vdom$ = Rx.Observable.combineLatest(
     marker_type_c.DOM, pop_size_c.DOM,
