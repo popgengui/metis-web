@@ -49,7 +49,7 @@ const plot_spec = conf => {
 		    "y": {"field": "y",
 			  "axis": {"title": "${cf.y_label}"},
 			  "type": "quantitative"},
-		    "color": {"field": "marker", "type": "nominal"}
+		    "color": {"field": "marker", "type": "nominal", "legend": null }
 		}
 
 	},
@@ -58,7 +58,7 @@ const plot_spec = conf => {
 		"encoding":{
 			"x":{ "field": "x", "type": "quantitative" },
 			"y":{ "field": "hemean", "type":"quantitative" }, 
-		        "color": { "field": "marker", "type": "nominal" } 
+		        "color": { "field": "marker", "type": "nominal", "legend":null } 
 		}
 	},
 	{
@@ -66,8 +66,10 @@ const plot_spec = conf => {
 			"type": "text",
 			"align": "right",
 			"baseline": "middle",
-			"dx":15,
-			"fontWeight":"bold"
+			"dx":0,
+			"fontWeight":"bold",
+			"color":"black",
+			"legend":null
 		},
 		"encoding":{
 			"x":{ "field":"xplus", "type":"quantitative" },

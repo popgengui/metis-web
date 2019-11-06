@@ -77,14 +77,56 @@ export const SimpleApp = (sources) => {
      * final values to the right of the line-ends
      */
     var final_cycle_number = num_cycles + 2
-    var x_axis_text_offset = Math.round( 0.1 * num_cycles )
+    var x_axis_text_offset_percentage = 0.0
+    var x_axis_unit_shift = 0
+    if ( num_cycles < 5 )
+    {
+      x_axis_text_offset_percentage = 0.0
+      x_axis_unit_shift = 0.5
+    }
+    else if ( num_cycles < 10 )
+    {
+      x_axis_text_offset_percentage=0.0
+      x_axis_unit_shift = 0.8
+    }
+    else if ( num_cycles < 50 )
+    {
+      x_axis_text_offset_percentage=0.0
+      x_axis_unit_shift = 4.0
+    }
+    else if ( num_cycles < 100 )
+    {
+      x_axis_text_offset_percentage = 0.05
+      x_axis_unit_shift = 4.0
+    }
+    else if ( num_cycles < 250 )
+    {
+      x_axis_text_offset_percentage = 0.10
+      x_axis_unit_shift = 6.0
+    }
+    else if ( num_cycles < 300 )
+    { 
+      x_axis_text_offset_percentage = 0.12
+      x_axis_unit_shift = 8
+    }
+    else
+    {
+      x_axis_unit_shift=10
+      x_axis_text_offset_percentage = 0.15
+    }
+    ///// temp
+    console.log( "x-axis offset percentage: " + x_axis_text_offset_percentage )
+    /////
+	  
+    var x_axis_text_offset= Math.round( x_axis_text_offset_percentage * num_cycles )
+
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
       return {
 	      x: state.cycle - 1, 
 	      y: exphe,	 
 	      marker: ( cnt == ( num_markers + 1 ) ? "Mean" :  'M' + cnt++ ), 
 	      hemean: state.global_parameters.ExpHe.unlinked[ num_vals - 1 ],
-	      xplus: state.cycle + 2 + x_axis_text_offset,
+	      xplus: ( state.cycle - 1 ) + x_axis_unit_shift + x_axis_text_offset,
 	      ytext:  state.cycle === final_cycle_number ? 
 	      				cnt2 === ( num_vals - 1 ) ?
 	      					 "Mean: " + state.global_parameters.ExpHe.unlinked[ cnt2++ ].toFixed(2) 
