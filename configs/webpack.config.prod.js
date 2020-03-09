@@ -25,6 +25,7 @@ module.exports = {
       paths.appIndex
     ]
   },
+  node: { fs:'empty' },
   output: {
     // This is the productin JS bundle containing code from all our entry points.
     filename: 'bundle.js',
@@ -68,7 +69,16 @@ module.exports = {
               ['transform-object-rest-spread']
           ]
         }
-      }
+      },
+// 2019_11_01 -- ted adds, so we can use custom styles:
+	    {
+	      test: /\.css$/,
+	      use: [ 
+		      'style-loader',
+		      'css-loader'
+	      ]
+	    }
+
     ]
   },
   plugins: [

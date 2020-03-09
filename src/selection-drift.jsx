@@ -13,7 +13,10 @@ import {
   ops_stats_demo_SexStatistics,
   ops_stats_hz_ExpHe,
   ops_stats_FreqAl,
-  ops_stats_TimeFix,
+  /*this op was not used in this interface,
+   * and it's been deprecated -- see the
+   * Drift with Multiple Loci simple-freq.jsx module*/
+  //ops_stats_TimeFix,
   ops_stats_NumAl,
   ops_wrap_list,
   ops_stats_utils_SaveGenepop,
@@ -37,7 +40,7 @@ const prepare_sim_state = (tag, pop_size, num_markers, freq_start,
       new ops_stats_demo_SexStatistics(),
       new ops_stats_NumAl(),
       new ops_stats_FreqAl(),
-      new ops_stats_TimeFix(),
+     // new ops_stats_TimeFix(),
       new ops_stats_hz_ExpHe()
   ])
   const individuals = p_generate_n_inds(pop_size, () =>

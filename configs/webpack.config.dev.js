@@ -37,6 +37,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
   },
+  target: 'node',
   output: {
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
@@ -102,5 +103,6 @@ module.exports = {
       Snabbdom: 'snabbdom-pragma'
     })
   ],
-  devtool: 'inline-source-map'
+  devtool: 'inline-source-map',
+  node: { fs: 'empty' }
 }

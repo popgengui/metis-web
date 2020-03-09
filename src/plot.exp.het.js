@@ -12,7 +12,7 @@ import * as vl from 'vega-lite'
 
 /*This for convenient trials.
  * The original value was 600*/
-let viewWidth=600
+let viewWidth=850
 
 /* Note the addition of the "autosize" property, setting its "resize"
  * If set to "true", the legend will accomodate longer text horiz.,
@@ -84,7 +84,7 @@ const plot_spec = conf => {
 
 const prepare_plot = (vl_text, conf, points, cb) => {
     const vl_json = JSON.parse(vl_text)
-    vl_json.width = conf.width || viewWidth
+    vl_json.width = viewWidth
     vl_json.height = vl_json.width - vl_json.width / 4
     const vg_spec = vg.parse(vl.compile(vl_json).spec)
 

@@ -4,13 +4,14 @@ import {Plot} from './plot.js'
 import {PlotExpHet} from './plot.exp.het.js'
 import {Selector} from './selector.js'
 import {Slider} from './slider.js'
+
 /*20191101 Ted adds a plot style*/
 import './metisstyles.css'
 
 import {
   create_sex_population,
   create_unlinked_species
-} from './sim.js'
+} from './sim.with.init.allele.freq.js'
 
 /* 2019_10_30. Ted adds allele frequency plot.*/
 import {
@@ -24,8 +25,8 @@ import {
   ops_wrap_list
 } from '@tiagoantao/metis-sim'
 
-const prepare_sim_state = (tag, pop_size, num_markers, marker_type) => {
-  const species = create_unlinked_species(num_markers, marker_type)
+const prepare_sim_state = (tag, pop_size, num_markers, marker_type, freq_start ) => {
+  const species = create_unlinked_species(num_markers, marker_type )
   const operators = ops_wrap_list([
     new ops_rep_SexualReproduction(species, pop_size),
     new ops_culling_KillOlderGenerations(),
@@ -34,13 +35,12 @@ const prepare_sim_state = (tag, pop_size, num_markers, marker_type) => {
     new ops_stats_NumAl(),
     new ops_stats_hz_ExpHe( true )
   ])
-  const individuals = create_sex_population(species, pop_size)
+  const individuals = create_sex_population(species, pop_size, freq_start)
   const state = {
     global_parameters: {tag, stop: false},
     individuals, operators, cycle: 1}
   return state
 }
-
 
 export const SimpleApp = (sources) => {
   const tag = 'simple'
@@ -114,9 +114,6 @@ export const SimpleApp = (sources) => {
       x_axis_unit_shift=10
       x_axis_text_offset_percentage = 0.15
     }
-    ///// temp
-    console.log( "x-axis offset percentage: " + x_axis_text_offset_percentage )
-    /////
 	  
     var x_axis_text_offset= Math.round( x_axis_text_offset_percentage * num_cycles )
 
@@ -155,6 +152,16 @@ export const SimpleApp = (sources) => {
      label: 'Marker type'})
   let marker_type
   marker_type_c.value.subscribe(v => marker_type = v)
+
+  /* 2019_11_06.  Ted adds slider to get an init allele freq*/
+  const freq_start_c = Slider(
+    {DOM: sources.DOM},
+    {className: '.' + tag + '-freq_start',
+     label: 'Starting frequency of the allele (%) (SNPs Only)',
+     step: 1, min: 1, value: 50, max: 99})
+  let freq_start
+  freq_start_c.value.subscribe(v => freq_start = v)
+
   
   const pop_size_c = Slider(
     {DOM: sources.DOM},
@@ -210,7 +217,7 @@ export const SimpleApp = (sources) => {
   const metis$ = simulate$.map(_ => {
     const init = {
       num_cycles,
-      state: prepare_sim_state(tag, pop_size, num_markers, marker_type)
+      state: prepare_sim_state(tag, pop_size, num_markers, marker_type, 100 - freq_start )
     }
     return init
   })
@@ -233,12 +240,13 @@ export const SimpleApp = (sources) => {
   
 
   /* 2019_10_30. Ted adds an allele-freq plot*/
+/* 2019_11_06.  Ted adds slider to get init allele freq*/
 
   const vdom$ = Rx.Observable.combineLatest(
-    marker_type_c.DOM, pop_size_c.DOM,
+    marker_type_c.DOM, freq_start_c.DOM, pop_size_c.DOM,
     num_cycles_c.DOM, num_markers_c.DOM,
     freqal_plot.DOM, exphe_plot.DOM, sr_plot.DOM, numal_plot.DOM).map(
-      ([marker_type, pop_size, num_cycles, num_markers,
+      ([marker_type, freq_start,  pop_size, num_cycles, num_markers,
         freqal_plot, exphe, sex_ratio, numal]) =>
 	  <html>
 	  <head>
@@ -248,6 +256,7 @@ export const SimpleApp = (sources) => {
 	    <h2>Wright-Fisher with Sex</h2>
             <div style="text-align: center">
               {marker_type}
+	      {freq_start}
               {pop_size}
               {num_cycles}
               {num_markers}

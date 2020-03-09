@@ -24,7 +24,6 @@ import {
   p_assign_fixed_size_population
 } from '@tiagoantao/metis-sim'
 
-
 const prepare_sim_state = (
   tag, num_demes, deme_size, num_migs,
   num_markers, marker_type) => {
@@ -54,28 +53,143 @@ export const IslandApp = (sources) => {
     state => state.global_parameters.tag === tag)
 
   const exphe$ = my_metis$.map(state => {
+
     var cnt = 1
+    var cnt2 = 0
+    /* 2019_11_11 -- Ted revising to match the exp het plotting
+     * implemented in the simple.jsx module.
+     */
+
     var num_vals=state.global_parameters.ExpHe.unlinked.length
     var mean_val=state.global_parameters.ExpHe.unlinked[ num_vals - 1 ]
+
+    var final_cycle_number = num_cycles + 2
+    var x_axis_text_offset_percentage = 0.0
+    var x_axis_unit_shift = 0
+
+    if ( num_cycles < 5 )
+    {
+      x_axis_text_offset_percentage = 0.0
+      x_axis_unit_shift = 0.5
+    }
+    else if ( num_cycles < 10 )
+    {
+      x_axis_text_offset_percentage=0.0
+      x_axis_unit_shift = 0.8
+    }
+    else if ( num_cycles < 50 )
+    {
+      x_axis_text_offset_percentage=0.0
+      x_axis_unit_shift = 4.0
+    }
+    else if ( num_cycles < 100 )
+    {
+      x_axis_text_offset_percentage = 0.05
+      x_axis_unit_shift = 4.0
+    }
+    else if ( num_cycles < 250 )
+    {
+      x_axis_text_offset_percentage = 0.10
+      x_axis_unit_shift = 6.0
+    }
+    else if ( num_cycles < 300 )
+    { 
+      x_axis_text_offset_percentage = 0.12
+      x_axis_unit_shift = 8
+    }
+    else
+    {
+      x_axis_unit_shift=10
+      x_axis_text_offset_percentage = 0.15
+    }
+	  
+    var x_axis_text_offset = Math.round( x_axis_text_offset_percentage * num_cycles )
+
+
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
       return {
 	      x: state.cycle - 1, 
 	      y: exphe,
-	      hemean: mean_val,
-	      marker: cnt === num_markers + 1 ? 'Mean': 'M' + cnt++}})
+	      hemean: mean_val=state.global_parameters.ExpHe.unlinked[ num_vals - 1 ],
+	      marker: cnt === num_markers + 1 ? 'Mean': 'M' + cnt++,
+	      xplus: ( state.cycle - 1 ) + x_axis_unit_shift + x_axis_text_offset,
+	      ytext:  state.cycle === final_cycle_number ? 
+	      				cnt2 === ( num_vals - 1 ) ?
+	      					 "Mean: " + state.global_parameters.ExpHe.unlinked[ cnt2++ ].toFixed(2) 
+	      					 : state.global_parameters.ExpHe.unlinked[ cnt2++ ].toFixed(2) 
+	      				: ""
+
+      
+      }})
   })
 
   const dexphe$ = my_metis$.map(state => {
+    /* 2019_11_11. Ted adds revisions to match the exphe prep above, which
+     * matches the latest version as seen in module simple.jsx
+     */
+    
     var cnt = 1
+    var cnt2 = 0
+
     var num_vals=state.global_parameters.DemeExpHe[0].unlinked.length
-    var mean_val=state.global_parameters.DemeExpHe[0].unlinked[ num_vals - 1 ]
+
+    var final_cycle_number = num_cycles + 2
+    var x_axis_text_offset_percentage = 0.0
+    var x_axis_unit_shift = 0
+
+    if ( num_cycles < 5 )
+    {
+      x_axis_text_offset_percentage = 0.0
+      x_axis_unit_shift = 0.5
+    }
+    else if ( num_cycles < 10 )
+    {
+      x_axis_text_offset_percentage=0.0
+      x_axis_unit_shift = 0.8
+    }
+    else if ( num_cycles < 50 )
+    {
+      x_axis_text_offset_percentage=0.0
+      x_axis_unit_shift = 4.0
+    }
+    else if ( num_cycles < 100 )
+    {
+      x_axis_text_offset_percentage = 0.05
+      x_axis_unit_shift = 4.0
+    }
+    else if ( num_cycles < 250 )
+    {
+      x_axis_text_offset_percentage = 0.10
+      x_axis_unit_shift = 6.0
+    }
+    else if ( num_cycles < 300 )
+    { 
+      x_axis_text_offset_percentage = 0.12
+      x_axis_unit_shift = 8
+    }
+    else
+    {
+      x_axis_unit_shift=10
+      x_axis_text_offset_percentage = 0.15
+    }
+	  
+    var x_axis_text_offset= Math.round( x_axis_text_offset_percentage * num_cycles )
 
     return state.global_parameters.DemeExpHe[0].unlinked.map(exphe => {
       return {
 	      x: state.cycle - 1, 
 	      y: exphe, 
-	      hemean: mean_val,
-	      marker: cnt === num_markers + 1 ? 'Mean' : 'M' + cnt++}})
+	      marker: cnt === num_markers + 1 ? 'Mean' : 'M' + cnt++,
+              hemean: state.global_parameters.DemeExpHe[0].unlinked[ num_vals - 1 ],
+	      xplus: ( state.cycle - 1 ) + x_axis_unit_shift + x_axis_text_offset,
+	      ytext:  state.cycle === final_cycle_number ? 
+	      				cnt2 === ( num_vals - 1 ) ?
+	      					 "Mean: " + state.global_parameters.DemeExpHe[0].unlinked[ cnt2++ ].toFixed(2) 
+	      					 : state.global_parameters.DemeExpHe[0].unlinked[ cnt2++ ].toFixed(2) 
+	      				: ""
+
+
+      }})
   })
     
   const marker_type_c = Selector(

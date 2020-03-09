@@ -5,9 +5,12 @@ import {Selector} from './selector.js'
 import {Slider} from './slider.js'
 import {Table} from './table.js'
 
+/*20200307. Note I (Ted) have deprecated TimeFix class 
+ (see simple-freq.jsx and the all.js in metis-sim*/
 
 import {
   gn_generate_unlinked_genome,
+  gn_make_cum_marker_stats_holder,
   gn_SNP,
   i_assign_random_sex,
   integrated_create_freq_genome,
@@ -17,7 +20,7 @@ import {
   ops_stats_demo_SexStatistics,
   ops_stats_hz_ExpHe,
   ops_stats_FreqAl,
-  ops_stats_TimeFix,
+  //ops_stats_TimeFix,
   ops_stats_NumAl,
   ops_wrap_list,
   p_generate_n_inds,
@@ -36,16 +39,21 @@ const prepare_sim_state = (tag, pop_size, num_markers, freq_start) => {
     new ops_stats_demo_SexStatistics(),
     new ops_stats_NumAl(),
     new ops_stats_FreqAl(),
-    new ops_stats_TimeFix(),
+//    new ops_stats_TimeFix(),
     new ops_stats_hz_ExpHe()
   ])
   const individuals = p_generate_n_inds(pop_size, () =>
     i_assign_random_sex(integrated_generate_individual_with_genome(
       species, 0,
       (ind) => integrated_create_freq_genome(freq_start / 100, ind))))
+
+  /*Ted adds 20200307 to fix bug in the time-to-fixation updating*/
+  const cum_marker_stats=gn_make_cum_marker_stats_holder( num_markers )
+
+
   const state = {
     global_parameters: {tag, stop: false},
-    individuals, operators, cycle: 1}
+    individuals, operators, cycle: 1, cum_stats:cum_marker_stats }
   return state
 }
 
@@ -76,22 +84,62 @@ export const RecombNeutralApp = (sources) => {
       return {
         x: state.cycle - 1, y: numal, marker: 'M' + cnt++}})
   })
-
+/*
   const timefix$ = my_metis$.map(state => {
     var cnt = 1
     return state.global_parameters.TimeFix.unlinked.map(tf => {
       return {
         cycle: tf, marker: 'M' + cnt++}})
   })
+*/
 
+ const currfix$=my_metis$.map( state => {
+	  return state.cum_stats.cycle_at_fix } )
+
+/* 20200307.  Ted replaces this to use the cum_stats
+ * object (see below) -- solves a bug in this version.
   const exphe_timefix$ = exphe$
     .combineLatest(timefix$, (exp_he, time_fix) => {
       const comb = []
-      for (let i=0; i<exp_he.length; i++) {
+      for (let i=0; i < exp_he.length; i++) {
         comb.push({
           marker: exp_he[i].marker,
           cycle: time_fix[i].cycle,
           exp_he: Math.round(100 * exp_he[i].y) / 100
+        })
+      }
+      return comb
+    })
+*/
+  const exphe_timefix$ = exphe$
+    .combineLatest(currfix$, (exp_he, time_fix) => {
+      const comb = []
+      
+      for (let i=0; i < exp_he.length; i++) {
+
+       var this_exp_he=Math.round(100 * exp_he[i].y) / 100
+       var this_cycle=""       
+       //If exp_he is zero, the marker is fixed:
+        if ( this_exp_he === 0 ){
+	      //If this marker already fixed, 
+	      //we use the prev cycle number:
+	      if ( time_fix[i] != -1 )
+	      {
+		      this_cycle=time_fix[i]
+	      }else{
+		      //else we use the current
+		      //cycle number, and record it
+		      //in our cum stats array:
+		      this_cycle=exp_he[i].x
+		      time_fix[i] = this_cycle
+	      }
+        }
+
+
+        comb.push({
+          marker: exp_he[i].marker,
+          cycle: this_cycle,
+          exp_he: this_exp_he
         })
       }
       return comb
