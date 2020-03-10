@@ -107,9 +107,12 @@ export const IslandApp = (sources) => {
 
 
     return state.global_parameters.ExpHe.unlinked.map(exphe => {
+     /*20200309.  Ted added a new return field, yfixed, simply the
+      * exphe value formatted to show only 2 decimal places */
       return {
 	      x: state.cycle - 1, 
 	      y: exphe,
+	      yfixed: exphe.toFixed(2),
 	      hemean: mean_val=state.global_parameters.ExpHe.unlinked[ num_vals - 1 ],
 	      marker: cnt === num_markers + 1 ? 'Mean': 'M' + cnt++,
 	      xplus: ( state.cycle - 1 ) + x_axis_unit_shift + x_axis_text_offset,
@@ -176,9 +179,11 @@ export const IslandApp = (sources) => {
     var x_axis_text_offset= Math.round( x_axis_text_offset_percentage * num_cycles )
 
     return state.global_parameters.DemeExpHe[0].unlinked.map(exphe => {
+      /*20200309 Ted added yfixed field, so table can output exphe only to 2 decimal places*/
       return {
 	      x: state.cycle - 1, 
 	      y: exphe, 
+	      yfixed: exphe.toFixed(2),
 	      marker: cnt === num_markers + 1 ? 'Mean' : 'M' + cnt++,
               hemean: state.global_parameters.DemeExpHe[0].unlinked[ num_vals - 1 ],
 	      xplus: ( state.cycle - 1 ) + x_axis_unit_shift + x_axis_text_offset,
@@ -235,18 +240,19 @@ export const IslandApp = (sources) => {
   let num_markers
   num_markers_c.value.subscribe(v => num_markers = v)
 
-  
+ /*20200309 Ted added yfixed field to the exphe$ output, 
+ * above, to format output limit 2 decimal places */ 
   const ht_table = Table(
     {DOM: sources.DOM,
      data: exphe$.startWith([])},
-    {fields: ['y', 'marker'],
+    {fields: ['yfixed', 'marker'],
      headers: ['Expected Heterozygosity', 'Marker']}
   )
-
+/*202000309 Ted added yfixed field (see above)*/
   const hs_table = Table(
     {DOM: sources.DOM,
      data: dexphe$.startWith([])},
-    {fields: ['y', 'marker'],
+    {fields: ['yfixed', 'marker'],
      headers: ['Expected Heterozygosity', 'Marker']}
   )
 

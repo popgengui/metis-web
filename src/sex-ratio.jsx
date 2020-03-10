@@ -123,15 +123,15 @@ export const SexRatioApp = (sources) => {
     {DOM: sources.DOM, vals: exphe$})
 
   const sr_plot = Plot(
-    {id: tag + '-sr', y_label: 'Sex Ratio'},
+    {id: tag + '-sr', y_label: 'Sex Ratio', yrange: 'auto' },
     {DOM: sources.DOM, vals: sex_ratio$})
 
   const ne_plot = Plot(
-    {id: tag + '-ne', y_label: 'Ne'},
+    {id: tag + '-ne', y_label: 'Ne', yrange: 'auto' },
     {DOM: sources.DOM, vals: ne$})
   
   const numal_plot = Plot(
-    {id: tag + '-numal', y_label: 'Number of distinct alleles'},
+    {id: tag + '-numal', y_label: 'Number of distinct alleles', yrange: 'auto'},
     {DOM: sources.DOM, vals: numal$})
 
   const simulate$ = sources.DOM.select('#' + tag)

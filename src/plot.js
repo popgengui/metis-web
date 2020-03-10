@@ -17,6 +17,18 @@ const plot_spec = conf => {
     cf.title = cf.title || ''
     cf.x_label = cf.x_label || 'Generations'
     cf.y_label = cf.y_label || ''
+    cf.yrange = cf.yrange || "[ 0, 1.0 ]"
+
+    var ytype="\"type\": \"quantitative\""
+    var scopeentry="\"scale\": {\"domain\": " + cf.yrange + " }"
+
+    /*if caller wants to allow vega-lite
+     * to auto scale the y axis, we 
+     * put in a dummy property */
+    if ( cf.yrange === "auto" ){
+	scopeentry="\"null\":null"
+    }
+
     return `
     {
         "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
@@ -34,7 +46,8 @@ const plot_spec = conf => {
                   "bandSize": "fit"},
             "y": {"field": "y",
                   "axis": {"title": "${cf.y_label}"},
-                  "type": "quantitative"},
+                  "type": "quantitative",
+		  ${scopeentry} },
             "color": {"field": "marker", "type": "nominal"}
         }
     }`}

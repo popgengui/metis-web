@@ -127,13 +127,13 @@ export const WFApp = (sources) => {
     {DOM: sources.DOM, vals: exphe$})
 
   const sr_plot = Plot(
-    {id: tag + '-sr', y_label: 'Sex Ratio', title: 'Sex Ratio'},
+    {id: tag + '-sr', y_label: 'Sex Ratio', title: 'Sex Ratio', yrange: 'auto'},
     {DOM: sources.DOM, vals: sex_ratio$})
 
   
   const numal_plot = Plot(
     {id: tag + '-numal', y_label: 'Number of distinct alleles',
-    title: 'Number of distinct alleles'},
+	    title: 'Number of distinct alleles', yrange: 'auto' },
     {DOM: sources.DOM, vals: numal$})
 
   const simulate$ = sources.DOM.select('#' + tag)
